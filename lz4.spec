@@ -4,7 +4,7 @@
 #
 Name     : lz4
 Version  : 131
-Release  : 8
+Release  : 9
 URL      : https://github.com/Cyan4973/lz4/archive/r131.tar.gz
 Source0  : https://github.com/Cyan4973/lz4/archive/r131.tar.gz
 Summary  : fast lossless compression algorithm library
