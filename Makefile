@@ -1,4 +1,5 @@
 PKG_NAME := lz4
-URL := https://github.com/Cyan4973/lz4/archive/r131.tar.gz
+URL := https://github.com/lz4/lz4/archive/v1.7.4.2.tar.gz
+
 
 include ../common/Makefile.common
