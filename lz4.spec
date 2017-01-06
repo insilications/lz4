@@ -4,7 +4,7 @@
 #
 Name     : lz4
 Version  : 1.7.4.2
-Release  : 12
+Release  : 13
 URL      : https://github.com/lz4/lz4/archive/v1.7.4.2.tar.gz
 Source0  : https://github.com/lz4/lz4/archive/v1.7.4.2.tar.gz
 Summary  : extremely fast lossless compression algorithm library
@@ -14,6 +14,11 @@ Requires: lz4-bin
 Requires: lz4-lib
 Requires: lz4-doc
 BuildRequires : cmake
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : valgrind
 
 %description
@@ -63,6 +68,9 @@ lib components for the lz4 package.
 
 %prep
 %setup -q -n lz4-1.7.4.2
+pushd ..
+cp -a lz4-1.7.4.2 build32
+popd
 
 %build
 export LANG=C
@@ -77,6 +85,15 @@ make V=1
 
 %install
 rm -rf %{buildroot}
+pushd ../build32/
+%make_install32 PREFIX=/usr LIBDIR=/usr/lib64
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
 %make_install PREFIX=/usr LIBDIR=/usr/lib64
 
 %files
