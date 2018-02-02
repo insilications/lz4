@@ -4,7 +4,7 @@
 #
 Name     : lz4
 Version  : 1.7.5
-Release  : 16
+Release  : 17
 URL      : https://github.com/lz4/lz4/archive/v1.7.5.tar.gz
 Source0  : https://github.com/lz4/lz4/archive/v1.7.5.tar.gz
 Summary  : extremely fast lossless compression algorithm library
