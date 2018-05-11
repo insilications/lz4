@@ -4,7 +4,7 @@
 #
 Name     : lz4
 Version  : 1.7.5
-Release  : 19
+Release  : 20
 URL      : https://github.com/lz4/lz4/archive/v1.7.5.tar.gz
 Source0  : https://github.com/lz4/lz4/archive/v1.7.5.tar.gz
 Summary  : extremely fast lossless compression algorithm library
@@ -50,6 +50,17 @@ Provides: lz4-devel
 dev components for the lz4 package.
 
 
+%package dev32
+Summary: dev32 components for the lz4 package.
+Group: Default
+Requires: lz4-lib32
+Requires: lz4-bin
+Requires: lz4-dev
+
+%description dev32
+dev32 components for the lz4 package.
+
+
 %package doc
 Summary: doc components for the lz4 package.
 Group: Documentation
@@ -66,6 +77,14 @@ Group: Libraries
 lib components for the lz4 package.
 
 
+%package lib32
+Summary: lib32 components for the lz4 package.
+Group: Default
+
+%description lib32
+lib32 components for the lz4 package.
+
+
 %prep
 %setup -q -n lz4-1.7.5
 pushd ..
@@ -77,7 +96,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1526072956
+export SOURCE_DATE_EPOCH=1526073346
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -88,10 +107,10 @@ export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -f
 make
 
 %install
-export SOURCE_DATE_EPOCH=1526072956
+export SOURCE_DATE_EPOCH=1526073346
 rm -rf %{buildroot}
 pushd ../build32/
-%make_install32 PREFIX=/usr LIBDIR=/usr/lib64
+%make_install32 PREFIX=/usr LIBDIR=/usr/lib64 PREFIX=/usr LIBDIR=/usr/lib32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
 pushd %{buildroot}/usr/lib32/pkgconfig
@@ -117,6 +136,12 @@ popd
 /usr/lib64/liblz4.so
 /usr/lib64/pkgconfig/liblz4.pc
 
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/liblz4.so
+/usr/lib32/pkgconfig/32liblz4.pc
+/usr/lib32/pkgconfig/liblz4.pc
+
 %files doc
 %defattr(-,root,root,-)
 %doc /usr/share/man/man1/*
@@ -125,3 +150,8 @@ popd
 %defattr(-,root,root,-)
 /usr/lib64/liblz4.so.1
 /usr/lib64/liblz4.so.1.7.5
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/liblz4.so.1
+/usr/lib32/liblz4.so.1.7.5
