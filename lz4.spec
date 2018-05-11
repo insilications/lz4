@@ -4,7 +4,7 @@
 #
 Name     : lz4
 Version  : 1.7.5
-Release  : 18
+Release  : 19
 URL      : https://github.com/lz4/lz4/archive/v1.7.5.tar.gz
 Source0  : https://github.com/lz4/lz4/archive/v1.7.5.tar.gz
 Summary  : extremely fast lossless compression algorithm library
@@ -73,17 +73,22 @@ cp -a lz4-1.7.5 build32
 popd
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
+export SOURCE_DATE_EPOCH=1526072956
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto -fno-semantic-interposition "
-make V=1
+export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+make
 
 %install
+export SOURCE_DATE_EPOCH=1526072956
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32 PREFIX=/usr LIBDIR=/usr/lib64
