@@ -4,7 +4,7 @@
 #
 Name     : lz4
 Version  : 1.7.5
-Release  : 20
+Release  : 21
 URL      : https://github.com/lz4/lz4/archive/v1.7.5.tar.gz
 Source0  : https://github.com/lz4/lz4/archive/v1.7.5.tar.gz
 Summary  : extremely fast lossless compression algorithm library
@@ -12,8 +12,9 @@ Group    : Development/Tools
 License  : BSD-2-Clause GPL-2.0
 Requires: lz4-bin
 Requires: lz4-lib
-Requires: lz4-doc
-BuildRequires : cmake
+Requires: lz4-license
+Requires: lz4-man
+BuildRequires : buildreq-cmake
 BuildRequires : gcc-dev32
 BuildRequires : gcc-libgcc32
 BuildRequires : gcc-libstdc++32
@@ -34,6 +35,8 @@ typically reaching RAM speed limits on multi-core systems.
 %package bin
 Summary: bin components for the lz4 package.
 Group: Binaries
+Requires: lz4-license
+Requires: lz4-man
 
 %description bin
 bin components for the lz4 package.
@@ -64,6 +67,7 @@ dev32 components for the lz4 package.
 %package doc
 Summary: doc components for the lz4 package.
 Group: Documentation
+Requires: lz4-man
 
 %description doc
 doc components for the lz4 package.
@@ -72,6 +76,7 @@ doc components for the lz4 package.
 %package lib
 Summary: lib components for the lz4 package.
 Group: Libraries
+Requires: lz4-license
 
 %description lib
 lib components for the lz4 package.
@@ -80,9 +85,26 @@ lib components for the lz4 package.
 %package lib32
 Summary: lib32 components for the lz4 package.
 Group: Default
+Requires: lz4-license
 
 %description lib32
 lib32 components for the lz4 package.
+
+
+%package license
+Summary: license components for the lz4 package.
+Group: Default
+
+%description license
+license components for the lz4 package.
+
+
+%package man
+Summary: man components for the lz4 package.
+Group: Default
+
+%description man
+man components for the lz4 package.
 
 
 %prep
@@ -96,7 +118,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1526073346
+export SOURCE_DATE_EPOCH=1533856742
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -106,9 +128,24 @@ export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-m
 export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 make
 
+pushd ../build32/
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export CFLAGS="$CFLAGS -m32"
+export CXXFLAGS="$CXXFLAGS -m32"
+export LDFLAGS="$LDFLAGS -m32"
+make
+popd
 %install
-export SOURCE_DATE_EPOCH=1526073346
+export SOURCE_DATE_EPOCH=1533856742
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/doc/lz4
+cp LICENSE %{buildroot}/usr/share/doc/lz4/LICENSE
+cp contrib/debian/copyright %{buildroot}/usr/share/doc/lz4/contrib_debian_copyright
+cp contrib/djgpp/LICENSE %{buildroot}/usr/share/doc/lz4/contrib_djgpp_LICENSE
+cp examples/COPYING %{buildroot}/usr/share/doc/lz4/examples_COPYING
+cp lib/LICENSE %{buildroot}/usr/share/doc/lz4/lib_LICENSE
+cp programs/COPYING %{buildroot}/usr/share/doc/lz4/programs_COPYING
+cp tests/COPYING %{buildroot}/usr/share/doc/lz4/tests_COPYING
 pushd ../build32/
 %make_install32 PREFIX=/usr LIBDIR=/usr/lib64 PREFIX=/usr LIBDIR=/usr/lib32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -143,8 +180,8 @@ popd
 /usr/lib32/pkgconfig/liblz4.pc
 
 %files doc
-%defattr(-,root,root,-)
-%doc /usr/share/man/man1/*
+%defattr(0644,root,root,0755)
+%doc /usr/share/doc/lz4/*
 
 %files lib
 %defattr(-,root,root,-)
@@ -155,3 +192,19 @@ popd
 %defattr(-,root,root,-)
 /usr/lib32/liblz4.so.1
 /usr/lib32/liblz4.so.1.7.5
+
+%files license
+%defattr(-,root,root,-)
+/usr/share/doc/lz4/LICENSE
+/usr/share/doc/lz4/contrib_djgpp_LICENSE
+/usr/share/doc/lz4/examples_COPYING
+/usr/share/doc/lz4/lib_LICENSE
+/usr/share/doc/lz4/programs_COPYING
+/usr/share/doc/lz4/tests_COPYING
+
+%files man
+%defattr(-,root,root,-)
+/usr/share/man/man1/lz4.1
+/usr/share/man/man1/lz4c.1
+/usr/share/man/man1/lz4cat.1
+/usr/share/man/man1/unlz4.1
