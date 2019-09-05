@@ -4,7 +4,7 @@
 #
 Name     : lz4
 Version  : 1.9.1
-Release  : 26
+Release  : 27
 URL      : https://github.com/lz4/lz4/archive/v1.9.1.tar.gz
 Source0  : https://github.com/lz4/lz4/archive/v1.9.1.tar.gz
 Summary  : extremely fast lossless compression algorithm library
@@ -111,28 +111,29 @@ popd
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1556050478
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1567721921
+export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
-export CFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FCFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export FFLAGS="$CFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
-export CXXFLAGS="$CXXFLAGS -O3 -falign-functions=32 -ffat-lto-objects -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CFLAGS="$CFLAGS -O3 -Os -falign-functions=32 -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FCFLAGS="$CFLAGS -O3 -Os -falign-functions=32 -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export FFLAGS="$CFLAGS -O3 -Os -falign-functions=32 -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
+export CXXFLAGS="$CXXFLAGS -O3 -Os -falign-functions=32 -fdata-sections -ffat-lto-objects -ffunction-sections -flto=4 -fno-math-errno -fno-semantic-interposition -fno-trapping-math "
 make
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
 export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
-export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32"
-export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32"
-export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 make
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1556050478
+export SOURCE_DATE_EPOCH=1567721921
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/lz4
 cp contrib/debian/copyright %{buildroot}/usr/share/package-licenses/lz4/contrib_debian_copyright
