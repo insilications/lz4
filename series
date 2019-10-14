@@ -1,1 +1,2 @@
 fix-make-install.patch
+0001-Makefile-propagate-CFLAGS.patch
