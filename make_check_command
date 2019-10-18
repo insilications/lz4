@@ -1,1 +1,1 @@
-pushd programs ; make test ; popd
+make test
