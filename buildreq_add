@@ -4,3 +4,4 @@
 ## Debuginfo package not available on koji builders, disable mem test
 # glibc-debuginfo
 valgrind
+findutils
