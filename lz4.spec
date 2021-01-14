@@ -4,10 +4,10 @@
 #
 %define keepstatic 1
 Name     : lz4
-Version  : 1.9.2
-Release  : 31
-URL      : file:///insilications/build/clearlinux/packages/lz4/lz4-v1.9.2.tar.gz
-Source0  : file:///insilications/build/clearlinux/packages/lz4/lz4-v1.9.2.tar.gz
+Version  : 131
+Release  : 32
+URL      : file:///insilications/build/clearlinux/packages/lz4/lz4-131.tar.gz
+Source0  : file:///insilications/build/clearlinux/packages/lz4/lz4-131.tar.gz
 Summary  : extremely fast lossless compression algorithm library
 Group    : Development/Tools
 License  : GPL-2.0
@@ -26,8 +26,6 @@ BuildRequires : valgrind
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
-Patch1: fix-make-install.patch
-Patch2: 0001-Makefile-propagate-CFLAGS.patch
 
 %description
 LZ4 - Extremely fast compression
@@ -54,6 +52,8 @@ Requires: lz4-lib = %{version}-%{release}
 Requires: lz4-bin = %{version}-%{release}
 Provides: lz4-devel = %{version}-%{release}
 Requires: lz4 = %{version}-%{release}
+Requires: lz4-dev = %{version}-%{release}
+Requires: lz4-dev32 = %{version}-%{release}
 
 %description dev
 dev components for the lz4 package.
@@ -65,6 +65,7 @@ Group: Default
 Requires: lz4-lib32 = %{version}-%{release}
 Requires: lz4-bin = %{version}-%{release}
 Requires: lz4-dev = %{version}-%{release}
+Requires: lz4-dev32 = %{version}-%{release}
 
 %description dev32
 dev32 components for the lz4 package.
@@ -98,6 +99,7 @@ man components for the lz4 package.
 Summary: staticdev components for the lz4 package.
 Group: Default
 Requires: lz4-dev = %{version}-%{release}
+Requires: lz4-dev32 = %{version}-%{release}
 
 %description staticdev
 staticdev components for the lz4 package.
@@ -106,7 +108,7 @@ staticdev components for the lz4 package.
 %package staticdev32
 Summary: staticdev32 components for the lz4 package.
 Group: Default
-Requires: lz4-dev = %{version}-%{release}
+Requires: lz4-dev32 = %{version}-%{release}
 
 %description staticdev32
 staticdev32 components for the lz4 package.
@@ -115,8 +117,6 @@ staticdev32 components for the lz4 package.
 %prep
 %setup -q -n lz4
 cd %{_builddir}/lz4
-%patch1 -p1
-%patch2 -p1
 pushd ..
 cp -a lz4 build32
 popd
@@ -125,8 +125,9 @@ popd
 unset http_proxy
 unset https_proxy
 unset no_proxy
+export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1598781539
+export SOURCE_DATE_EPOCH=1610597785
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -153,9 +154,6 @@ export RANLIB=gcc-ranlib
 export NM=gcc-nm
 #export CCACHE_DISABLE=1
 ## altflags_pgo end
-##
-%define _lto_cflags 1
-##
 export CFLAGS="${CFLAGS_GENERATE}"
 export CXXFLAGS="${CXXFLAGS_GENERATE}"
 export FFLAGS="${FFLAGS_GENERATE}"
@@ -173,9 +171,9 @@ export LDFLAGS="${LDFLAGS_USE}"
 make  %{?_smp_mflags}  V=1 VERBOSE=1
 
 pushd ../build32/
-export CFLAGS="-g -O2 -fuse-linker-plugin -pipe"
-export CXXFLAGS="-g -O2 -fuse-linker-plugin -fvisibility-inlines-hidden -pipe"
-export LDFLAGS="-g -O2 -fuse-linker-plugin -pipe"
+export CFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
+export CXXFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -fvisibility-inlines-hidden -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
+export LDFLAGS="-O2 -ffat-lto-objects -fuse-linker-plugin -pipe -fPIC -m32 -mstackrealign -march=native -mtune=native"
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
 export NM=gcc-nm
@@ -189,7 +187,7 @@ make  %{?_smp_mflags}  V=1 VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1598781539
+export SOURCE_DATE_EPOCH=1610597785
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32 PREFIX=/usr LIBDIR=/usr/lib64 PREFIX=/usr LIBDIR=/usr/lib32
@@ -230,12 +228,12 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/liblz4.so.1
-/usr/lib64/liblz4.so.1.9.2
+/usr/lib64/liblz4.so.1.9.3
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/liblz4.so.1
-/usr/lib32/liblz4.so.1.9.2
+/usr/lib32/liblz4.so.1.9.3
 
 %files man
 %defattr(0644,root,root,0755)
