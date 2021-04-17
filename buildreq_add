@@ -1,7 +1,51 @@
 # This file contains additional build requirements that did not get
 # picked up automatically. One name per line, no whitespace.
-
-## Debuginfo package not available on koji builders, disable mem test
-# glibc-debuginfo
 valgrind
 findutils
+binutils-dev
+binutils-extras
+bison
+dejagnu
+docbook-utils
+docbook-xml
+doxygen
+elfutils-dev
+expect
+flex
+gcc
+gcc-abi
+gcc-dev
+gcc-dev32
+gcc-doc
+gcc-libgcc32
+gcc-libs-math
+gcc-libstdc++32
+gcc-libubsan
+gcc-locale
+gdb-dev
+git
+glibc-abi
+glibc-bench
+glibc-bin
+glibc-dev
+glibc-dev32
+glibc-doc
+glibc-extras
+glibc-lib-avx2
+glibc-libc32
+glibc-locale
+glibc-nscd
+glibc-staticdev
+glibc-utils
+gmp-dev
+gmp-staticdev
+graphviz
+guile
+libedit
+libedit-dev
+libffi-dev
+libffi-staticdev
+libgcc1
+libstdc++
+libunwind
+libunwind-dev
