@@ -13,7 +13,6 @@ elfutils-dev
 expect
 flex
 gcc
-gcc-abi
 gcc-dev
 gcc-dev32
 gcc-doc
@@ -24,7 +23,6 @@ gcc-libubsan
 gcc-locale
 gdb-dev
 git
-glibc-abi
 glibc-bench
 glibc-bin
 glibc-dev
@@ -38,13 +36,13 @@ glibc-nscd
 glibc-staticdev
 glibc-utils
 gmp-dev
-gmp-staticdev
+#gmp-staticdev
 graphviz
 guile
 libedit
 libedit-dev
 libffi-dev
-libffi-staticdev
+#libffi-staticdev
 libgcc1
 libstdc++
 libunwind

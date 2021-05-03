@@ -39,7 +39,6 @@ BuildRequires : gcc-libubsan
 BuildRequires : gcc-locale
 BuildRequires : gdb-dev
 BuildRequires : git
-BuildRequires : glibc-abi
 BuildRequires : glibc-bench
 BuildRequires : glibc-bin
 BuildRequires : glibc-dev
@@ -53,13 +52,11 @@ BuildRequires : glibc-nscd
 BuildRequires : glibc-staticdev
 BuildRequires : glibc-utils
 BuildRequires : gmp-dev
-BuildRequires : gmp-staticdev
 BuildRequires : graphviz
 BuildRequires : guile
 BuildRequires : libedit
 BuildRequires : libedit-dev
 BuildRequires : libffi-dev
-BuildRequires : libffi-staticdev
 BuildRequires : libgcc1
 BuildRequires : libstdc++
 BuildRequires : libunwind
@@ -165,7 +162,7 @@ unset https_proxy
 unset no_proxy
 export SSL_CERT_FILE=/var/cache/ca-certs/anchors/ca-certificates.crt
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1618655594
+export SOURCE_DATE_EPOCH=1620021327
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -245,15 +242,15 @@ make  %{?_smp_mflags}  V=1 VERBOSE=1
 popd
 
 %install
-export SOURCE_DATE_EPOCH=1618655594
+export SOURCE_DATE_EPOCH=1620021327
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32 PREFIX=/usr LIBDIR=/usr/lib64 PREFIX=/usr LIBDIR=/usr/lib32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
 then
-pushd %{buildroot}/usr/lib32/pkgconfig
-for i in *.pc ; do ln -s $i 32$i ; done
-popd
+    pushd %{buildroot}/usr/lib32/pkgconfig
+    for i in *.pc ; do ln -s $i 32$i ; done
+    popd
 fi
 popd
 %make_install PREFIX=/usr LIBDIR=/usr/lib64
