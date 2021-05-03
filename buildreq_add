@@ -36,13 +36,13 @@ glibc-nscd
 glibc-staticdev
 glibc-utils
 gmp-dev
-#gmp-staticdev
+gmp-staticdev
 graphviz
 guile
 libedit
 libedit-dev
 libffi-dev
-#libffi-staticdev
+libffi-staticdev
 libgcc1
 libstdc++
 libunwind
